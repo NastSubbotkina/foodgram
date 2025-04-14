@@ -26,11 +26,8 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = [IngredientInRecipeInline]
     list_display = ('name', 'author__username', 'favorites_count')
     list_filter = ('tags',)
-    search_fields = ('name', 'author__username')  # поиск по названию и автору
-    
+    search_fields = ('name', 'author__username')
+
     @admin.display(description='В избранном')
     def favorites_count(self, obj):
         return obj.favorites.count()
-  
-
-

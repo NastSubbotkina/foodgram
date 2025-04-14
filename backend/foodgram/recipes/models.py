@@ -74,7 +74,8 @@ class Recipe(models.Model):
     cooking_time = models.PositiveIntegerField(
         verbose_name="Время приготовления (в минутах)"
     )
-    pub_date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField(
+        auto_now_add=True, verbose_name="Дата публикации")
 
     class Meta:
         ordering = ['-pub_date']
@@ -86,6 +87,7 @@ class Recipe(models.Model):
 
 
 class IngredientInRecipe(models.Model):
+    """Модель для связи Ингредиентов и Рецептов с количеством."""
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
@@ -173,7 +175,6 @@ class ShortLink(models.Model):
         Генерирует хэш для короткой ссылки.
         """
         hash_val = hashlib.sha256(str(recipe_id).encode()).digest()
-        # Берём первые 6 байт и кодируем в base64
         return base64.urlsafe_b64encode(hash_val)[:6].decode()
 
     def save(self, *args, **kwargs):

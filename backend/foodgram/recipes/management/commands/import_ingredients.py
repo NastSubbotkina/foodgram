@@ -11,7 +11,8 @@ class Command(BaseCommand):
     help = 'Import ingredients from a fixed CSV file'
 
     def handle(self, *args, **kwargs):
-        csv_file_path = os.path.join(settings.BASE_DIR, 'data', 'ingredients.csv')  # Укажите путь к вашему файлу
+        csv_file_path = os.path.join(
+            settings.BASE_DIR, 'data', 'ingredients.csv')
 
         with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)

@@ -6,7 +6,9 @@ from .validators import username_validator
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, password, username, first_name, last_name, **extra_fields):
+    def create_user(
+        self, email, password, username, first_name, last_name, **extra_fields
+    ):
         email = self.normalize_email(email)
 
         user = self.model(
@@ -20,7 +22,9 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password, username, first_name, last_name, **extra_fields):
+    def create_superuser(
+        self, email, password, username, first_name, last_name, **extra_fields
+    ):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -33,10 +37,9 @@ class CustomUserManager(BaseUserManager):
             **extra_fields
         )
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    """
-    Кастомная модель пользователя, наследующаяся от AbstractBaseUser и PermissionsMixin.
-    """
+
     email = models.EmailField(
         max_length=254,
         unique=True,
@@ -52,7 +55,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=150, verbose_name='Фамилия')
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)  # Позволяет доступ в админку
+    is_staff = models.BooleanField(default=False)
     avatar = models.ImageField(
         upload_to='users/avatars/',
         null=True,
