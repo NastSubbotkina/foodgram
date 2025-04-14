@@ -1,19 +1,26 @@
-from django.shortcuts import get_object_or_404, redirect
-from django.http import HttpResponse
-from django.core.files.storage import default_storage
 from collections import defaultdict
-from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
-from recipes.models import Ingredient, Tag, Recipe, ShoppingCart, IngredientInRecipe, Favorite, ShortLink
-from .serializers import IngredientSerializer, TagSerializer, RecipeSerializer, RecipeShortSerializer, ShortLinkSerializer, CustomUserSerializer, CustomUserCreateSerializer, CustomUserAvatarSerializer, PasswordChangeSerializer, UserWithRecipesSerializer
-from .permissions import RecipePermission
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from users.models import CustomUser
-from .pagination import CustomPagination
-from rest_framework import permissions
-from .filters import RecipeFilter, IngredientFilter
+
+from django.core.files.storage import default_storage
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect
 from django_filters.rest_framework import DjangoFilterBackend
+from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
+                            ShoppingCart, ShortLink, Tag)
+from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from users.models import CustomUser
+
+from .filters import IngredientFilter, RecipeFilter
+from .pagination import CustomPagination
+from .permissions import RecipePermission
+from .serializers import (CustomUserAvatarSerializer,
+                          CustomUserCreateSerializer, CustomUserSerializer,
+                          IngredientSerializer, PasswordChangeSerializer,
+                          RecipeSerializer, RecipeShortSerializer,
+                          ShortLinkSerializer, TagSerializer,
+                          UserWithRecipesSerializer)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):

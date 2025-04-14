@@ -1,8 +1,8 @@
-import hashlib
 import base64
+import hashlib
 
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 
 class Ingredient(models.Model):
