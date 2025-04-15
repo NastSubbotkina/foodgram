@@ -22,14 +22,14 @@ class RecipeFilter(FilterSet):
         model = Recipe
         fields = ['tags', 'author', 'is_favorited', 'is_in_shopping_cart']
 
-    def filter_favorites(self, queryset, value):
+    def filter_favorites(self, queryset, name, value):
         """Фильтрация рецептов, по наличию в избранном."""
         user = self.request.user
         if user.is_authenticated and value:
             return queryset.filter(favorites__user=user)
         return queryset
 
-    def filter_shopping_cart(self, queryset, value):
+    def filter_shopping_cart(self, queryset, name, value):
         """Фильтрация рецептов, по наличию в списке покупок."""
         user = self.request.user
         if user.is_authenticated and value:
