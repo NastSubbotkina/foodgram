@@ -100,7 +100,7 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IngredientInRecipe
-        fields = ('id', 'measurement_unit', 'amount')
+        fields = ('id', 'name', 'measurement_unit', 'amount')
         read_only_fields = ('id', 'name', 'measurement_unit')
 
 
@@ -118,10 +118,11 @@ class RecipeSerializer(serializers.ModelSerializer):
         queryset=Tag.objects.all(),
         many=True
     )
-    ingredients = IngredientInRecipeSerializer(
-        many=True,
-        source='ingredient_in_recipe',  # related_name в through-модели
-        required=True
+    ingredients = serializers.ListField(
+        child=serializers.DictField(),
+        write_only=True,
+        required=True,
+        allow_empty=False,
     )
     author = CustomUserSerializer(read_only=True)
     is_favorited = serializers.SerializerMethodField()
@@ -136,7 +137,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = (
-            'id', 'name', 'author', 'tags', 'ingredients',
+            'id', 'name', 'author', 'tags',
             'is_favorited', 'is_in_shopping_cart',
             'image', 'text', 'cooking_time'
         )
