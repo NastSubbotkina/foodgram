@@ -85,7 +85,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Формирует и отдает файл со списком покупок."""
         user = request.user
         ingredients_data = IngredientInRecipe.objects.filter(
-            recipe__shopping_carts__user=user
+            recipe__in_shopping_cart__user=user
         ).values(
             name=F('ingredient__name'),
             unit=F('ingredient__measurement_unit')
