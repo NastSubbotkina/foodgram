@@ -161,16 +161,15 @@ class RecipeSerializer(serializers.ModelSerializer):
         """Преобразует объект Recipe в представление для JSON ответа."""
         representation = super().to_representation(instance)
         representation['tags'] = TagSerializer(
-            instance.tags,
-            many=True,
-            read_only=True
-        ).data
+        instance.tags.all(),
+        many=True,
+        context=self.context
+        ).data 
         representation['ingredients'] = IngredientInRecipeSerializer(
-            instance.ingredient_in_recipe,
-            many=True,
-            read_only=True
+        instance.ingredient_in_recipe.all(),
+        many=True,
+        context=self.context
         ).data
-        return representation
 
     def validate_tags(self, data):
         """Валидирует поле tags."""
