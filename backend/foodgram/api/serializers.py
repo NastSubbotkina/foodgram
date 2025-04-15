@@ -172,6 +172,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             read_only=True,
             context=self.context
         ).data
+        return representation
 
     def validate_tags(self, data):
         """Валидирует поле tags."""

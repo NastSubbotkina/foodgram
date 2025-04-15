@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.core.files.storage import default_storage
 from django.db.models import F, Sum
 from django.http import HttpResponse
@@ -42,8 +43,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filterset_class = RecipeFilter
 
     def perform_create(self, serializer):
-        """Присваивает автора при создании рецепта."""
-        serializer.save(author=self.request.user)
+        if self.request.user.is_authenticated:
+            serializer.save(author=self.request.user)
+        else:
+            raise PermissionDenied()
 
     @action(detail=True, methods=['post', 'delete'])
     def shopping_cart(self, request, pk=None):
