@@ -299,7 +299,7 @@ class ShortLinkSerializer(serializers.Serializer):
     short_link = serializers.SerializerMethodField()
 
     def get_short_link(self, obj):
-        return f"https://nastfoodgram.zapto.org/s/{obj.hash}"
+        return f"https://nastfoodgram1.zapto.org/s/{obj.hash}"
 
     def to_representation(self, instance):
         return {
