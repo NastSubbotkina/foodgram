@@ -115,7 +115,6 @@ class IngredientAmountSerializer(serializers.Serializer):
         1, message='Количество должно быть не меньше 1.')])
 
 
-
 class TagSerializer(serializers.ModelSerializer):
     """Сериализатор для тегов."""
     class Meta:
