@@ -163,3 +163,8 @@ DJOSER = {
         'user_create': 'yourapp.serializers.CustomUserCreateSerializer',  # Кастомный сериализатор
     },
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://nastfoodgram1.zapto.org",
+
+]

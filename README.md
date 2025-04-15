@@ -2,4 +2,8 @@
 
 По адресу http://localhost изучите фронтенд веб-приложения, а по адресу http://localhost/api/docs/ — спецификацию API.
 
-доменное имя: http://nastfoodgram.zapto.org
+доменное имя: http://nastfoodgram1.zapto.org
+
+Админка:
+Адрес электронной почты:subbotkinanasta00@gmail.com
+пароль: q251166q
