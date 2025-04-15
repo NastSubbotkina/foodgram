@@ -44,8 +44,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
             return RecipeReadSerializer
-        else:
-            return RecipeWriteSerializer
+        return RecipeWriteSerializer
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:

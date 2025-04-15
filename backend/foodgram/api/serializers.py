@@ -105,6 +105,17 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'name', 'measurement_unit')
 
 
+class IngredientAmountSerializer(serializers.Serializer):
+    """
+    Сериализатор для обработки количества ингредиентов
+    при создании/обновлении рецепта.
+    """
+    id = serializers.IntegerField()
+    amount = serializers.IntegerField(validators=[MinValueValidator(
+        1, message='Количество должно быть не меньше 1.')])
+
+
+
 class TagSerializer(serializers.ModelSerializer):
     """Сериализатор для тегов."""
     class Meta:
@@ -155,11 +166,10 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         queryset=Tag.objects.all(),
         many=True
     )
-    ingredients = serializers.ListField(
-        child=serializers.DictField(),
+    ingredients = IngredientAmountSerializer(
+        many=True,
         write_only=True,
-        required=True,
-        allow_empty=False,
+        required=True
     )
     image = Base64ImageField(required=True, allow_null=False)
     cooking_time = serializers.IntegerField(
