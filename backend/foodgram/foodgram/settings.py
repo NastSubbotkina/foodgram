@@ -157,10 +157,10 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    'LOGIN_FIELD': 'email',  # Поле для входа (например, email)
-    'USER_CREATE_PASSWORD_RETYPE': True,  # Подтверждение пароля при регистрации
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
     'SERIALIZERS': {
-        'user_create': 'yourapp.serializers.CustomUserCreateSerializer',  # Кастомный сериализатор
+        'user_create': 'yourapp.serializers.CustomUserCreateSerializer',
     },
 }
 

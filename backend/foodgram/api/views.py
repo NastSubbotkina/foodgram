@@ -175,7 +175,7 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         permission_classes=[IsAuthenticated]
     )
     def me(self, request):
-        # Возвращает данные текущего пользователя
+        """Возвращает данные текущего пользователя"""
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
 
