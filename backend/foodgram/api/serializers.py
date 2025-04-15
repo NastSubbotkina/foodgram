@@ -163,7 +163,8 @@ class RecipeSerializer(serializers.ModelSerializer):
         representation['tags'] = TagSerializer(
             instance.tags.all(),
             many=True,
-            read_only=True
+            read_only=True,
+            context=self.context
         ).data
         representation['ingredients'] = IngredientInRecipeSerializer(
             instance.ingredient_in_recipe.all(),
