@@ -12,7 +12,6 @@ djoser==2.3.1
 flake8==6.0.0
 flake8-isort==6.0.0
 idna==3.10
-isort==5.13.2
 mccabe==0.7.0
 oauthlib==3.2.2
 pillow==11.1.0
