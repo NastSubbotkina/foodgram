@@ -139,7 +139,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'name', 'author', 'tags',
             'is_favorited', 'is_in_shopping_cart',
-            'image', 'text', 'cooking_time'
+            'image', 'text', 'cooking_time', 'ingredients'
         )
         read_only_fields = ('id', 'author', 'is_favorited',
                             'is_in_shopping_cart')
