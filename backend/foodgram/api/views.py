@@ -18,9 +18,9 @@ from .permissions import RecipePermission
 from .serializers import (CustomUserAvatarSerializer,
                           CustomUserCreateSerializer, CustomUserSerializer,
                           IngredientSerializer, PasswordChangeSerializer,
-                          RecipeSerializer, RecipeShortSerializer,
-                          ShortLinkSerializer, TagSerializer,
-                          UserWithRecipesSerializer)
+                          RecipeReadSerializer, RecipeShortSerializer,
+                          RecipeWriteSerializer, ShortLinkSerializer,
+                          TagSerializer, UserWithRecipesSerializer)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -37,10 +37,15 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
     permission_classes = [RecipePermission]
     pagination_class = CustomPagination
     filterset_class = RecipeFilter
+
+    def get_serializer_class(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return RecipeReadSerializer
+        else:
+            return RecipeWriteSerializer
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
