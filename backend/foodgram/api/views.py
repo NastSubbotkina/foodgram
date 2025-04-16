@@ -116,7 +116,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         user = request.user
         recipe = self.get_object()
-        favorite_exists = user.favorites.filter(recipe=recipe).exists()
+        favorite_exists = Favorite.objects.filter(
+            user=user, recipe=recipe).exists()
         if request.method == 'POST':
             if favorite_exists:
                 return Response(
