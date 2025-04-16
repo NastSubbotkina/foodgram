@@ -8,6 +8,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 BASE_URL = os.environ.get('BASE_URL', 'http://localhost:8000')
+
 SHORTLINK_PREFIX = os.environ.get('SHORTLINK_PREFIX')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -17,8 +18,6 @@ DEBUG = os.getenv('DEBUG', False).lower() == 'true'
 allowed_hosts_string = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1')
 
 ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_string.split(',') if host.strip()]
-
-ALLOWED_HOSTS = ['localhost', 'nastfoodgram1.zapto.org', '89.169.164.170']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
