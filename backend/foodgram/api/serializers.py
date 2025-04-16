@@ -344,12 +344,12 @@ class SubscriptionValidateSerializer(serializers.Serializer):
             if is_subscribed:
                 raise serializers.ValidationError(
                     'Вы уже подписаны на этого пользователя.')
-
-        if request.method == 'DELETE':
-            if not is_subscribed:
-                raise serializers.ValidationError(
-                    'Вы не были подписаны на этого пользователя.')
             return data
+
+        if not is_subscribed:
+            raise serializers.ValidationError(
+                'Вы не были подписаны на этого пользователя.')
+        return data
 
 
 class ShortLinkSerializer(serializers.Serializer):
