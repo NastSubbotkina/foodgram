@@ -15,8 +15,6 @@ class RecipePermission(permissions.BasePermission):
         return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        if view.action in ['favorite', 'shopping_cart']:
-            return True
         if request.method in ['PATCH', 'DELETE']:
             return obj.author == request.user
         return True

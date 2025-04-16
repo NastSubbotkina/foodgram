@@ -50,7 +50,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         serializer.save(author=self.request.user)
 
-    @action(detail=True, methods=['post', 'delete'])
+    @action(
+        detail=True,
+        methods=['post', 'delete'],
+        permission_classes=[IsAuthenticated]
+    )
     def shopping_cart(self, request, pk=None):
         """
         Управляет добавлением и удалением рецепта из корзины покупок.
@@ -135,10 +139,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 )
             Favorite.objects.filter(user=user, recipe=recipe).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(
-            {'errors': 'Рецептnnn уже в избранном.'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
 
     @action(detail=True, methods=['get'], url_path='get-link')
     def get_short_link(self, request, pk=None):

@@ -27,7 +27,7 @@ class RecipeFilter(FilterSet):
         """Фильтрация рецептов, по наличию в избранном."""
         user = self.request.user
         if user.is_authenticated and value:
-            return queryset.filter(favorites__user=user)
+            return queryset.filter(recipe_favorites__user=user)
         return queryset
 
     def filter_shopping_cart(self, queryset, name, value):
