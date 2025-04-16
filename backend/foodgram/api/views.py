@@ -271,6 +271,6 @@ class CustomUserViewSet(viewsets.ModelViewSet):
             )
             return Response(
                 response_serializer.data, status=status.HTTP_201_CREATED)
- 
+
         user.subscriptions.remove(user_to_subscribe)
         return Response(status=status.HTTP_204_NO_CONTENT)
