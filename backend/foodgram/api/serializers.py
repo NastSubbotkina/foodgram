@@ -326,6 +326,31 @@ class UserWithRecipesSerializer(CustomUserSerializer):
         ).data
 
 
+class SubscriptionValidateSerializer(serializers.Serializer):
+    """Сериализатор для валидации запроса на подписку/отписку."""
+
+    def validate(self, data):
+        request = self.context.get('request')
+        user_to_subscribe = self.context.get('user_to_subscribe')
+        user = request.user
+        if user == user_to_subscribe:
+            raise serializers.ValidationError(
+                'Нельзя подписаться на самого себя.')
+
+        is_subscribed = user.subscriptions.filter(
+            id=user_to_subscribe.id).exists()
+
+        if request.method == 'POST':
+            if is_subscribed:
+                raise serializers.ValidationError(
+                    'Вы уже подписаны на этого пользователя.')
+
+        if not is_subscribed:
+            raise serializers.ValidationError(
+                'Вы не были подписаны на этого пользователя.')
+        return data
+
+
 class ShortLinkSerializer(serializers.Serializer):
     """Сериализатор для генерации короткой ссылки."""
 

@@ -19,7 +19,8 @@ from .serializers import (CustomUserAvatarSerializer,
                           IngredientSerializer, PasswordChangeSerializer,
                           RecipeReadSerializer, RecipeShortSerializer,
                           RecipeWriteSerializer, ShortLinkSerializer,
-                          TagSerializer, UserWithRecipesSerializer)
+                          TagSerializer, UserWithRecipesSerializer,
+                          SubscriptionValidateSerializer)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -62,7 +63,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if request.method == 'POST':
             if cart_exists:
                 return Response(
-                    {"detail": "Рецепт уже добавлен в корзину покупок."},
+                    {'detail': 'Рецепт уже добавлен в корзину покупок.'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
             ShoppingCart.objects.create(user=request.user, recipe=recipe)
@@ -71,7 +72,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         if not cart_exists:
             return Response(
-                {"errors": "Рецепта нет в корзине."},
+                {'errors': 'Рецепта нет в корзине.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         ShoppingCart.objects.filter(user=user, recipe=recipe).delete()
@@ -95,13 +96,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         ).order_by('name')
 
         shopping_list = [
-            f"- {item['name']} ({item['unit']}) — {item['total_amount']:.0f}"
+            f'- {item["name"]} ({item["unit"]}) — {item["total_amount"]:.0f}'
             for item in ingredients_data
         ]
         response = HttpResponse(content_type='text/plain')
         response['Content-Disposition'] = (
             'attachment; filename="shopping_list.txt"')
-        response.write("\n".join(shopping_list))
+        response.write('\n'.join(shopping_list))
         return response
 
     @action(
@@ -115,13 +116,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         user = request.user
         recipe = self.get_object()
-        favorite_exists = Favorite.objects.filter(
-            user=user, recipe=recipe).exists()
-
+        favorite_exists = user.favorites.filter(recipe=recipe).exists()
         if request.method == 'POST':
             if favorite_exists:
                 return Response(
-                    {"errors": "Рецепт уже в избранном."},
+                    {'errors': 'Рецепт уже в избранном.'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
             Favorite.objects.create(user=user, recipe=recipe)
@@ -130,7 +129,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         if not favorite_exists:
             return Response(
-                {"errors": "Рецепта нет в избранном."},
+                {'errors': 'Рецепта нет в избранном.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         Favorite.objects.filter(user=user, recipe=recipe).delete()
@@ -246,36 +245,26 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     )
     def subscribe(self, request, pk=None):
         """
-        Подписывает или отписывает пользователя.
+        Подписывает (POST) или отписывает (DELETE) пользователя.
         """
         user_to_subscribe = get_object_or_404(CustomUser, pk=pk)
         user = request.user
 
-        if user == user_to_subscribe:
-            return Response(
-                {"errors": "Нельзя подписаться на самого себя."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        is_subscribed = user.subscriptions.filter(
-            id=user_to_subscribe.id).exists()
+        validation_context = {
+            'request': request,
+            'user_to_subscribe': user_to_subscribe
+        }
+        action_serializer = SubscriptionValidateSerializer(
+            data={}, context=validation_context)
+        action_serializer.is_valid(raise_exception=True)
 
         if request.method == 'POST':
-            if is_subscribed:
-                return Response(
-                    {"errors": "Вы уже подписаны на этого пользователя."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
             user.subscriptions.add(user_to_subscribe)
-            serializer = UserWithRecipesSerializer(
+            response_serializer = self.get_serializer(
                 user_to_subscribe, context={'request': request}
             )
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        if not is_subscribed:
             return Response(
-                {"errors": "Вы не были подписаны на этого пользователя."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+                response_serializer.data, status=status.HTTP_201_CREATED)
+
         user.subscriptions.remove(user_to_subscribe)
         return Response(status=status.HTTP_204_NO_CONTENT)
