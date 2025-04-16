@@ -137,6 +137,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     {'errors': 'Рецепта нет в избранном.'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
+            print('это delete')
             Favorite.objects.filter(user=user, recipe=recipe).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
