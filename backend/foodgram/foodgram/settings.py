@@ -11,7 +11,7 @@ BASE_URL = os.environ.get('BASE_URL', 'http://localhost:8000')
 
 SHORTLINK_PREFIX = os.environ.get('SHORTLINK_PREFIX')
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-t&vwby$r^9n7tt(v3n5i_p&+s07=$gmedpln946(x%9zu8l+nn'
 
 DEBUG = os.getenv('DEBUG', False).lower() == 'true'
 
