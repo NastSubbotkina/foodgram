@@ -15,15 +15,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+BASE_URL = os.environ.get('BASE_URL', 'http://localhost:8000')
+SHORTLINK_PREFIX = os.environ.get('SHORTLINK_PREFIX')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-t&vwby$r^9n7tt(v3n5i_p&+s07=$gmedpln946(x%9zu8l+nn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
