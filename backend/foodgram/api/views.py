@@ -99,8 +99,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             for item in ingredients_data
         ]
         response = HttpResponse(content_type='text/plain')
-        response['Content-Disposition'] = 'attachment;' \
-            ' filename="shopping_list.txt"'
+        response['Content-Disposition'] = (
+            'attachment; filename="shopping_list.txt"')
         response.write("\n".join(shopping_list))
         return response
 
