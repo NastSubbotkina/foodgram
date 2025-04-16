@@ -116,8 +116,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         user = request.user
         recipe = self.get_object()
-        favorite_exists = Favorite.objects.filter(
-            user=user, recipe=recipe).exists()
+        favorite_exists = user.favorites.filter(recipe=recipe).exists()
         if request.method == 'POST':
             if favorite_exists:
                 return Response(
@@ -136,6 +135,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 )
             Favorite.objects.filter(user=user, recipe=recipe).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {'errors': 'Рецептnnn уже в избранном.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
     @action(detail=True, methods=['get'], url_path='get-link')
     def get_short_link(self, request, pk=None):
@@ -268,6 +271,6 @@ class CustomUserViewSet(viewsets.ModelViewSet):
             )
             return Response(
                 response_serializer.data, status=status.HTTP_201_CREATED)
-
+ 
         user.subscriptions.remove(user_to_subscribe)
         return Response(status=status.HTTP_204_NO_CONTENT)
