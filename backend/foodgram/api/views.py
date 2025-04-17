@@ -62,7 +62,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         recipe = self.get_object()
         user = request.user
         cart = user.shopping_cart.filter(recipe=recipe)
-        cart_exists = cart.exist()
+        cart_exists = cart.exists()
 
         if request.method == 'POST':
             if cart_exists:
@@ -120,7 +120,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         user = request.user
         recipe = self.get_object()
-        favorite = user.recipe_favorites.filter(recipe=recipe)
+        favorite = user.favorites.filter(recipe=recipe)
         favorite_exists = favorite.exists()
         if request.method == 'POST':
             if favorite_exists:
