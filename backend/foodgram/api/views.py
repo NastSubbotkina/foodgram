@@ -61,8 +61,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         recipe = self.get_object()
         user = request.user
-        cart_exists = ShoppingCart.objects.filter(
-            user=user, recipe=recipe).exists()
+        cart = user.shopping_cart.filter(recipe=recipe)
+        cart_exists = cart.exist()
 
         if request.method == 'POST':
             if cart_exists:
@@ -79,7 +79,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 {'errors': 'Рецепта нет в корзине.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        ShoppingCart.objects.filter(user=user, recipe=recipe).delete()
+        cart.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
@@ -120,7 +120,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         user = request.user
         recipe = self.get_object()
-        favorite_exists = user.recipe_favorites.filter(recipe=recipe).exists()
+        favorite = user.recipe_favorites.filter(recipe=recipe)
+        favorite_exists = favorite.exists()
         if request.method == 'POST':
             if favorite_exists:
                 return Response(
@@ -131,14 +132,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer = RecipeShortSerializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        elif request.method == 'DELETE':
-            if not favorite_exists:
-                return Response(
-                    {'errors': 'Рецепта нет в избранном.'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            Favorite.objects.filter(user=user, recipe=recipe).delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        if not favorite_exists:
+            return Response(
+                {'errors': 'Рецепта нет в избранном.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        favorite.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=True, methods=['get'], url_path='get-link')
     def get_short_link(self, request, pk=None):
