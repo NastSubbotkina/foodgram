@@ -100,54 +100,94 @@ API доступно по адресу `http://nastfoodgram1.zapto.org/api/`. Д
 *   **Endpoint:** `/api/recipes/`
 *   **Аутентификация:** Не требуется
 *   **Параметры запроса (Query Parameters):**
-    *   Могут использоваться для фильтрации (например, `?tags=slug1&author=1`), пагинации (`?page=2&limit=6`), поиска и т.д., в зависимости от настроек ViewSet'а.
+    *   Могут использоваться для фильтрации (например, `?tags=slug1&author=1`), пагинации (`?page=2&limit=6`).
 *   **Тело запроса:** Не используется для GET-запросов.
 *   **Пример ответа (успех, `200 OK`):**
 
     ```json
     {
-      "count": 150,
-      "next": "http://example.com/api/recipes/?page=2",
-      "previous": null,
-      "results": [
+      "count": 10,
+    "next": "http://nastfoodgram1.zapto.org/api/recipes/?page=2",
+    "previous": null,
+    "results": [
         {
-          "id": 1,
-          "tags": [
-            {
-              "id": 1,
-              "name": "Завтрак",
-              "color": "#FF0000",
-              "slug": "breakfast"
-            }
-          ],
-          "author": {
-            "email": "author1@example.com",
-            "id": 1,
-            "username": "author1",
-            "first_name": "Иван",
-            "last_name": "Иванов",
-            "is_subscribed": false
-          },
-          "ingredients": [
-            {
-              "id": 5,
-              "name": "Яйцо",
-              "measurement_unit": "шт",
-              "amount": 2
+            "id": 29,
+            "tags": [
+                {
+                    "id": 10,
+                    "name": "Здоровое питание",
+                    "slug": "Healthy"
+                },
+                {
+                    "id": 5,
+                    "name": "итальянская кухня",
+                    "slug": "Italian_food"
+                },
+                {
+                    "id": 6,
+                    "name": "Обед",
+                    "slug": "Lunch"
+                }
+            ],
+            "author": {
+                "email": "nast3@yandex.ru",
+                "id": 3,
+                "username": "Nast3",
+                "first_name": "Настя2",
+                "last_name": "Субботкина",
+                "is_subscribed": false,
+                "avatar": null
             },
-            {
-              "id": 12,
-              "name": "Молоко",
-              "measurement_unit": "мл",
-              "amount": 100
-            }
-          ],
-          "is_favorited": true,
-          "is_in_shopping_cart": false,
-          "name": "Омлет классический",
-          "image": "http://example.com/media/recipes/images/omelet.jpg",
-          "text": "Подробное описание приготовления омлета...",
-          "cooking_time": 15
+            "ingredients": [
+                {
+                    "id": 557,
+                    "name": "картофель",
+                    "measurement_unit": "г",
+                    "amount": 500
+                },
+                {
+                    "id": 521,
+                    "name": "капуста белокочанная",
+                    "measurement_unit": "г",
+                    "amount": 300
+                },
+                {
+                    "id": 887,
+                    "name": "лук репчатый",
+                    "measurement_unit": "г",
+                    "amount": 100
+                },
+                {
+                    "id": 1854,
+                    "name": "томатная паста",
+                    "measurement_unit": "г",
+                    "amount": 50
+                },
+                {
+                    "id": 1420,
+                    "name": "растительное масло",
+                    "measurement_unit": "мл",
+                    "amount": 30
+                },
+                {
+                    "id": 1685,
+                    "name": "соль",
+                    "measurement_unit": "г",
+                    "amount": 10
+                },
+                {
+                    "id": 1054,
+                    "name": "морковь",
+                    "measurement_unit": "г",
+                    "amount": 400
+                }
+            ],
+            "is_favorited": false,
+            "is_in_shopping_cart": false,
+            "name": "Овощное рагу",
+            "image": "http://nastfoodgram1.zapto.org/media/recipes/images/temp.jpeg",
+            "text": "1. Подготовка овощей:\n   - Картофель очистить и нарезать кубиками\n   - Морковь натереть на крупной терке\n   - Лук нарезать полукольцами\n   - Капусту нашинковать\n\n2. Обжарка:\n   - Разогреть растительное масло в казане или глубокой сковороде\n   - Обжарить лук до прозрачности (3-4 минуты)\n   - Добавить морковь, готовить ещё 5 минут\n\n3. Основное приготовление:\n   - Добавить картофель, перемешать\n   - Влить 200 мл воды, тушить под крышкой 15 минут\n   - Добавить капусту и томатную пасту\n   - Посолить, поперчить по вкусу\n\n4. Завершение:\n   - Тушить на медленном огне ещё 20 минут до готовности овощей\n   - Дать настояться 10 минут перед подачей\n\nПодавать горячим, посыпав свежей зеленью.",
+            "cooking_time": 32
         },
         {
           // ... другие рецепты ...
@@ -177,6 +217,17 @@ API доступно по адресу `http://nastfoodgram1.zapto.org/api/`. Д
     *   **Метод:** `POST`
     *   **Endpoint:** `/api/users/{user_id}/subscribe/` (где `{user_id}` - ID автора)
     *   **Аутентификация:** Требуется (Token)
+    *   **Body (JSON):**
+       ```json
+      {
+    "email": "nast.subbotkina@yandex.ru",
+    "id": 1,
+    "username": "Nastya1604",
+    "first_name": "Настя3",
+    "last_name": "Субботкина",
+    "is_subscribed": true,
+    "avatar": null
+    }
 
 5.  **Скачивание списка покупок:**
     *   **Метод:** `GET`
