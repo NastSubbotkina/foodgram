@@ -243,6 +243,4 @@ API доступно по адресу `http://nastfoodgram1.zapto.org/api/`. Д
               
 ## доменное имя: http://nastfoodgram1.zapto.org
 
-## Админка:
-Адрес электронной почты:subbotkinanasta00@gmail.com
-пароль: q251166q
+
